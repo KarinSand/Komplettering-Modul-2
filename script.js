@@ -20,12 +20,16 @@ function getWeatherCity(city) {
     const url =
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=sv&appid=${apiKey}`;
 
-    $.getJSON(url)
+        $.getJSON(url)
         .done(function(data) {
             showWeather(data);
+        })
+        .fail(function() {
+            //  felhantering
+            $("#weather-view").html(
+                "<p>Kunde inte hitta staden.</p>"
+            );
         });
-
-}
 function showWeather(data) {
     const html = `
         <h2>${data.name}</h2>
@@ -34,4 +38,5 @@ function showWeather(data) {
     `;
     $("#weather-view").html(html);
 
+}
 }
