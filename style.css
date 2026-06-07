@@ -12,5 +12,15 @@ header {
 main {
     width: 90%;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 5px;
+}
+#history-view {
+    margin-top: 20px;
+}
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: white;
 }
