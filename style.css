@@ -1,1 +1,16 @@
+.search-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+header {
+    text-align: center;
+    padding: 20px;
+}
 
+main {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+}
