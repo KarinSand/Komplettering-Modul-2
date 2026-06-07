@@ -1,1 +1,26 @@
+.search-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+header {
+    text-align: center;
+    padding: 20px;
+}
 
+main {
+    width: 90%;
+    max-width: 900px;
+    margin: 5px;
+}
+#history-view {
+    margin-top: 20px;
+}
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: white;
+}
