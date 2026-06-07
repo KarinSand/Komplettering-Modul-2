@@ -76,18 +76,18 @@ function getWeatherLocation(lat, lon) {
             );
         });
 }
-// Lägg till i historik
+// Lägg till historik
 function addToHistory(data) {
-
     const search = {
         city: data.name,
         temp: data.main.temp,
         wind: data.wind.speed
     };
-
     history.unshift(search);
-    showHistory();
-}
+    if (history.length > 5) {
+        history.pop();
+    }
+    showHistory();}
 // Visa historik
 function showHistory() {
     let html = "<h2>Senaste sökningar</h2>";
