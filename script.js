@@ -1,6 +1,13 @@
+let cityPopover;
 const apiKey = "9d11cfb88ff8a2357116587a4d2ea061";
 let history = [];
 $(document).ready(function () {
+    
+    cityPopover = new bootstrap.Popover(document.getElementById("cityInput"), {
+        trigger: "manual",
+        placement: "bottom",
+        content: "We couldn't find the city, try again!"
+    });
 
     const savedHistory = localStorage.getItem("weatherHistory");
     if (savedHistory !== null) {
@@ -47,29 +54,36 @@ function getWeatherCity(city) {
             addToHistory(data);
         })
         .fail(function () {
-
-            $("#weather-view").html(
-                "<p>Kunde inte hitta staden.</p>"
-            );
-        });
-}
+            $("#weather-view").empty();
+        
+            cityPopover.show();
+        
+            setTimeout(function () {
+                cityPopover.hide();
+            }, 3000);
+        });}
 // Visa vädret
 function showWeather(data) {
-
     const iconName = data.weather[0].icon;
     const iconUrl = "https://openweathermap.org/img/wn/" + iconName + "@2x.png";
+
     const html = `
-        <div class="weather-card">
-            <img src="${iconUrl}" alt="${data.weather[0].description}">
-            <h2>${data.name}</h2>
-            <p>Temperatur: ${data.main.temp} °C</p>
-            <p>Vind: ${data.wind.speed} m/s</p>
-            <p>${data.weather[0].description}</p>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <div class="weather-card d-flex align-items-center justify-content-between p-4 shadow rounded">
+                    <img src="${iconUrl}" alt="${data.weather[0].description}">
+                    <h2>${data.name}</h2>
+                    <p>Temperatur: ${data.main.temp} °C</p>
+                    <p>Vind: ${data.wind.speed} m/s</p>
+                    <p>${data.weather[0].description}</p>
+                </div>
+            </div>
         </div>
     `;
 
-    $("#weather-view").html(html); // visa vädret i #weather-view
+    $("#weather-view").html(html);
 }
+
 // Hämta väder med koordinater
 function getWeatherLocation(lat, lon) {
     const url =
@@ -85,7 +99,7 @@ function getWeatherLocation(lat, lon) {
                 "<p>Kunde inte hämta vädret för din plats.</p>"
             );
         });
-}
+    }
 // Lägg till historik
 function addToHistory(data) {
 
