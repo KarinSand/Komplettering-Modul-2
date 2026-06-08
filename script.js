@@ -1,6 +1,13 @@
+let cityPopover;
 const apiKey = "9d11cfb88ff8a2357116587a4d2ea061";
 let history = [];
 $(document).ready(function () {
+    
+    cityPopover = new bootstrap.Popover(document.getElementById("cityInput"), {
+        trigger: "manual",
+        placement: "bottom",
+        content: "Could not locate the city"
+    });
 
     const savedHistory = localStorage.getItem("weatherHistory");
     if (savedHistory !== null) {
@@ -12,20 +19,20 @@ $(document).ready(function () {
         event.preventDefault();
         const city = $("#cityInput").val().trim();
         if (city === "") {
-            $("#weather-view").html("<p>Skriv in en stad först.</p>");
+            $("#weather-view").html("<p>Type city</p>");
             return;
         }
-        $("#weather-view").html("<p>Hämtar väder för " + city + "...</p>");
+        $("#weather-view").html("<p>Getting weather for" + city + "...</p>");  //  Dölj popover om den visas
         getWeatherCity(city);
         $("#cityInput").val("");
     });
     // My location-knapp
     $("#locationBtn").on("click", function () {
         if (!navigator.geolocation) {
-            $("#weather-view").html("<p>Din webbläsare stödjer inte platsfunktion.</p>");
+            $("#weather-view").html("<p>Your browser does not support this functionilty.</p>");
             return;
         }
-        $("#weather-view").html("<p>Hämtar din plats...</p>");
+        $("#weather-view").html("<p>Getting your location</p>");
 
         navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
@@ -47,28 +54,31 @@ function getWeatherCity(city) {
             addToHistory(data);
         })
         .fail(function () {
-
-            $("#weather-view").html(
-                "<p>Kunde inte hitta staden.</p>"
-            );
-        });
-}
+            $("#weather-view").empty();
+            cityPopover.show();
+        
+            setTimeout(function () {
+                cityPopover.hide();
+            }, 3000);
+        });}
 // Visa vädret
 function showWeather(data) {
-
     const iconName = data.weather[0].icon;
     const iconUrl = "https://openweathermap.org/img/wn/" + iconName + "@2x.png";
-    const html = `
-        <div class="weather-card">
-            <img src="${iconUrl}" alt="${data.weather[0].description}">
-            <h2>${data.name}</h2>
-            <p>Temperatur: ${data.main.temp} °C</p>
-            <p>Vind: ${data.wind.speed} m/s</p>
-            <p>${data.weather[0].description}</p>
-        </div>
-    `;
 
-    $("#weather-view").html(html); // visa vädret i #weather-view
+    const html = `
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <div class="weather-card d-flex align-items-center justify-content-between p-4 shadow rounded">
+                    <img src="${iconUrl}" alt="${data.weather[0].description}">
+                    <h2>${data.name}</h2>
+                    <p>Temp: ${data.main.temp} °C       </p>
+                    <p>Vind: ${data.wind.speed} m/s     </p>
+                    <p>${data.weather[0].description}   </p>
+                </div>
+            </div>
+        </div>
+    `;$("#weather-view").html(html);
 }
 // Hämta väder med koordinater
 function getWeatherLocation(lat, lon) {
@@ -82,17 +92,18 @@ function getWeatherLocation(lat, lon) {
         })
         .fail(function () {
             $("#weather-view").html(
-                "<p>Kunde inte hämta vädret för din plats.</p>"
+                "<p>Could not find your current location</p>"
             );
         });
-}
+    }
 // Lägg till historik
 function addToHistory(data) {
 
     const search = {
         city: data.name,
         temp: data.main.temp,
-        wind: data.wind.speed
+        wind: data.wind.speed,
+        icon: data.weather[0].icon
     };
     history.unshift(search);
     if (history.length > 5) {
@@ -103,17 +114,21 @@ function addToHistory(data) {
 }
 // Visa historik
 function showHistory() {
-    let html = "<h2>Senaste sökningar</h2>";
-    history.forEach(function (item) {
+    $("#history-view").html("<h2>Latest searches</h2>");
+    history.forEach(function(item) {
+        const iconUrl = "https://openweathermap.org/img/wn/" + item.icon + "@2x.png";
 
-        html += `
-            <div class="history-item">
-                <p>${item.city}</p>
-                <p>${item.temp} °C</p>
-                <p>${item.wind} m/s</p>
+        $("#history-view").append(`
+            <div class="row justify-content-center mb-3"> 
+                <div class="col-12 col-md-10">
+                    <div class="history-item d-flex align-items-center justify-content-between p-3 shadow rounded">
+                        <img src="${iconUrl}" alt="Icon">
+                        <p class="mb-0">${item.city}        </p>
+                        <p class="mb-0">${item.temp} °C     </p>
+                        <p class="mb-0">${item.wind} m/s    </p>
+                    </div>
+                </div>
             </div>
-        `;
-
+        `);
     });
-    $("#history-view").html(html);
 }
