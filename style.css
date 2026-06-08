@@ -1,26 +1,83 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
 .search-row {
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 20px;
+
+    
 }
 header {
     text-align: center;
     padding: 20px;
+    margin: 20px ;
+    background-color:#98b13d;
+    border-radius: 8px;
+    
 }
-
-main {
-    width: 90%;
-    max-width: 900px;
-    margin: 5px;
+h2 {
+    text-align: center;
+    padding: 10px;
+    color: #000000;
 }
 #history-view {
-    margin-top: 20px;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 8px;
 }
 .history-item {
     display: flex;
     justify-content: space-between;
     padding: 10px;
     margin: 10px 0;
-    background-color: white;
+    background-color: rgb(122, 222, 255);
+    border-radius: 8px;
+}
+#locationBtn,
+#searchForm button,
+#cityInput {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.weather-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: rgb(255, 128, 244);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.weather-card img {
+    width: 100px;
+    
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .search-row,
+    #searchForm {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .history-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #cityInput,
+    #locationBtn,
+    #searchForm button {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
