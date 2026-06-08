@@ -1,56 +1,23 @@
 body {
     margin: 0;
 }
-
-.search-row {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 20px;
-}
 header {
     text-align: center;
-    padding: 40px 20px 20px;
-    margin: 10px;
-    border-radius: 8px;
-    
+    padding: 40px;
+    margin: 20px;
 }
 h2 {
     text-align: center;
     padding: 10px;
     color: #000000;
 }
-#history-view {
-    margin-top: 10px;
-    padding: 20px;
-    border-radius: 8px;
-}
 .weather-card,
 .history-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    margin: 10px;
     background-color: #e4e4e4;
-    border-radius: 8px;
-}
-#locationBtn,
-#searchForm button,
-#cityInput {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
 }
 .weather-card {
     gap: 20px;
     background-color: rgb(255, 128, 244);
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 700px;
-    margin: 20px auto;
 }
 .weather-card img {
     width: 80px;
@@ -62,14 +29,12 @@ h2 {
 .history-item img {
     width: 60px;
 }
-
 /* Responsive */
 @media (max-width: 600px) {
     .weather-card,
     .history-item {
         flex-direction: row;
     }
-
     .weather-card img {
         width: 70px;
     }

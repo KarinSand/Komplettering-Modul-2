@@ -6,7 +6,7 @@ $(document).ready(function () {
     cityPopover = new bootstrap.Popover(document.getElementById("cityInput"), {
         trigger: "manual",
         placement: "bottom",
-        content: "We couldn't find the city, try again!"
+        content: "Could not locate the city"
     });
 
     const savedHistory = localStorage.getItem("weatherHistory");
@@ -19,20 +19,20 @@ $(document).ready(function () {
         event.preventDefault();
         const city = $("#cityInput").val().trim();
         if (city === "") {
-            $("#weather-view").html("<p>Skriv in en stad först.</p>");
+            $("#weather-view").html("<p>Type city</p>");
             return;
         }
-        $("#weather-view").html("<p>Hämtar väder för " + city + "...</p>");
+        $("#weather-view").html("<p>Getting weather for" + city + "...</p>");  //  Dölj popover om den visas
         getWeatherCity(city);
         $("#cityInput").val("");
     });
     // My location-knapp
     $("#locationBtn").on("click", function () {
         if (!navigator.geolocation) {
-            $("#weather-view").html("<p>Din webbläsare stödjer inte platsfunktion.</p>");
+            $("#weather-view").html("<p>Your browser does not support this functionilty.</p>");
             return;
         }
-        $("#weather-view").html("<p>Hämtar din plats...</p>");
+        $("#weather-view").html("<p>Getting your location</p>");
 
         navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
@@ -55,7 +55,6 @@ function getWeatherCity(city) {
         })
         .fail(function () {
             $("#weather-view").empty();
-        
             cityPopover.show();
         
             setTimeout(function () {
@@ -73,17 +72,14 @@ function showWeather(data) {
                 <div class="weather-card d-flex align-items-center justify-content-between p-4 shadow rounded">
                     <img src="${iconUrl}" alt="${data.weather[0].description}">
                     <h2>${data.name}</h2>
-                    <p>Temperatur: ${data.main.temp} °C</p>
-                    <p>Vind: ${data.wind.speed} m/s</p>
-                    <p>${data.weather[0].description}</p>
+                    <p>Temp: ${data.main.temp} °C       </p>
+                    <p>Vind: ${data.wind.speed} m/s     </p>
+                    <p>${data.weather[0].description}   </p>
                 </div>
             </div>
         </div>
-    `;
-
-    $("#weather-view").html(html);
+    `;$("#weather-view").html(html);
 }
-
 // Hämta väder med koordinater
 function getWeatherLocation(lat, lon) {
     const url =
@@ -96,7 +92,7 @@ function getWeatherLocation(lat, lon) {
         })
         .fail(function () {
             $("#weather-view").html(
-                "<p>Kunde inte hämta vädret för din plats.</p>"
+                "<p>Could not find your current location</p>"
             );
         });
     }
@@ -118,16 +114,20 @@ function addToHistory(data) {
 }
 // Visa historik
 function showHistory() {
-    $("#history-view").html("<h2>Senaste sökningar</h2>");
+    $("#history-view").html("<h2>Latest searches</h2>");
     history.forEach(function(item) {
         const iconUrl = "https://openweathermap.org/img/wn/" + item.icon + "@2x.png";
 
         $("#history-view").append(`
-            <div class="history-item">
-                <img src="${iconUrl}" alt="Weather icon">
-                <p>${item.city}</p>
-                <p>${item.temp} °C</p>
-                <p>${item.wind} m/s</p>
+            <div class="row justify-content-center mb-3"> 
+                <div class="col-12 col-md-10">
+                    <div class="history-item d-flex align-items-center justify-content-between p-3 shadow rounded">
+                        <img src="${iconUrl}" alt="Icon">
+                        <p class="mb-0">${item.city}        </p>
+                        <p class="mb-0">${item.temp} °C     </p>
+                        <p class="mb-0">${item.wind} m/s    </p>
+                    </div>
+                </div>
             </div>
         `);
     });
