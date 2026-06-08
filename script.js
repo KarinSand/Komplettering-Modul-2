@@ -92,7 +92,8 @@ function addToHistory(data) {
     const search = {
         city: data.name,
         temp: data.main.temp,
-        wind: data.wind.speed
+        wind: data.wind.speed,
+        icon: data.weather[0].icon
     };
     history.unshift(search);
     if (history.length > 5) {
@@ -103,17 +104,17 @@ function addToHistory(data) {
 }
 // Visa historik
 function showHistory() {
-    let html = "<h2>Senaste sökningar</h2>";
-    history.forEach(function (item) {
+    $("#history-view").html("<h2>Senaste sökningar</h2>");
+    history.forEach(function(item) {
+        const iconUrl = "https://openweathermap.org/img/wn/" + item.icon + "@2x.png";
 
-        html += `
+        $("#history-view").append(`
             <div class="history-item">
+                <img src="${iconUrl}" alt="Weather icon">
                 <p>${item.city}</p>
                 <p>${item.temp} °C</p>
                 <p>${item.wind} m/s</p>
             </div>
-        `;
-
+        `);
     });
-    $("#history-view").html(html);
 }
