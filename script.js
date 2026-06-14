@@ -32,21 +32,22 @@ $(document).ready(function () {
         if (!navigator.geolocation) {
             $("#weather-view").html("<p>Your browser does not support this functionilty.</p>");
             return;
-        }
+        } // Geolocation supported end
         $("#weather-view").html("<p>Getting your location</p>");
 
         navigator.geolocation.getCurrentPosition(
             function (position) {
-            
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            getWeatherLocation(lat, lon);
+            // om platsen hämtas
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                getWeatherLocation(lat, lon);
+            },
             function (error) {
+            // om platsen ej kan hämtas
                 $("#weather-view").html("<p>Could not get your location</p>");
-            } // Geolocation error handling end
-            }); // Geolocation success end
-        });// My location-knapp end
+            }); 
+    });
 }); // Document ready end
 
 // Hämta väder för stad
