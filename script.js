@@ -120,12 +120,12 @@ function addToHistory(data) {
     if (history.length > 5) {
         history.pop();
     }
-    localStorage.setItem("weatherHistory", JSON.stringify(history));
+    localStorage.setItem("Latest requests", JSON.stringify(history));
     showHistory();
 }
 // Visa historik
 function showHistory() {
-    $("#history-view").html("<h2>Latest searches</h2>");
+    $("#history-view").html("<h2>Latest requests</h2>");
     history.forEach(function(item) {
         const iconUrl = "https://openweathermap.org/img/wn/" + item.icon + "@2x.png";
 

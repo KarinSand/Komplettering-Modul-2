@@ -9,15 +9,10 @@ header {
 h2 {
     text-align: center;
     padding: 10px;
-    color: #000000;
 }
-.weather-card,
-.history-item {
-    background-color: #8c8300;
-}
+
 .weather-card {
     gap: 20px;
-    background-color: rgb(255, 128, 244);
 }
 .weather-card img {
     width: 80px;
@@ -29,11 +24,14 @@ h2 {
 .history-item img {
     width: 60px;
 }
+footer {
+    text-align: center;
+}
 /* Responsive */
 @media (max-width: 600px) {
     .weather-card,
     .history-item {
-        flex-direction: row;
+
     }
     .weather-card img {
         width: 70px;
