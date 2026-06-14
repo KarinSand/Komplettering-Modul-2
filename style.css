@@ -1,37 +1,39 @@
 body {
     margin: 0;
+    text-align: center;
 }
 header {
     text-align: center;
-    padding: 40px;
+    padding: 60px 20px 30px;
     margin: 20px;
 }
 h2 {
     text-align: center;
     padding: 10px;
+    font-weight: bold;
 }
-
 .weather-card {
     gap: 20px;
 }
-.weather-card img {
-    width: 80px;
+#history-view p {
+    text-align: center;
 }
 .history-item {
     max-width: 700px;
     margin: 10px auto;
 }
-.history-item img {
-    width: 60px;
+.city-name {
+    font-weight: 700;
 }
 footer {
     text-align: center;
+    margin-top: 40px;
+    color: darkgrey;
 }
-/* Responsive */
 @media (max-width: 600px) {
     .weather-card,
     .history-item {
-
+        font-size: 14px;
     }
     .weather-card img {
         width: 70px;
