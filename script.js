@@ -22,10 +22,11 @@ $(document).ready(function () {
             $("#weather-view").html("<p>Type city</p>");
             return;
         }
-        $("#weather-view").html("<p>Getting weather for" + city + "...</p>");  //  Dölj popover om den visas
+        $("#weather-view").html("<p>Getting weather for " + city + "...</p>");  //Dölj popover om den visas
         getWeatherCity(city);
         $("#cityInput").val("");
-    });
+    }); // Sökfunktion end
+
     // My location-knapp
     $("#locationBtn").on("click", function () {
         if (!navigator.geolocation) {
@@ -34,14 +35,20 @@ $(document).ready(function () {
         }
         $("#weather-view").html("<p>Getting your location</p>");
 
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+            
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
             getWeatherLocation(lat, lon);
-        });
-    });
-});
+            function (error) {
+                $("#weather-view").html("<p>Could not get your location</p>");
+            } // Geolocation error handling end
+            }); // Geolocation success end
+        });// My location-knapp end
+}); // Document ready end
+
 // Hämta väder för stad
 function getWeatherCity(city) {
 
