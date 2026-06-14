@@ -6,7 +6,8 @@ $(document).ready(function () {
     cityPopover = new bootstrap.Popover(document.getElementById("cityInput"), {
         trigger: "manual",
         placement: "bottom",
-        content: "Could not locate the city"
+        container: "body",
+        content: "We couldn't find the city, try again!"
     });
 
     const savedHistory = localStorage.getItem("weatherHistory");
@@ -14,6 +15,7 @@ $(document).ready(function () {
         history = JSON.parse(savedHistory);
         showHistory();
     }
+
     // Sökfunktion
     $("#searchForm").on("submit", function (event) {
         event.preventDefault();
@@ -22,26 +24,32 @@ $(document).ready(function () {
             $("#weather-view").html("<p>Type city</p>");
             return;
         }
-        $("#weather-view").html("<p>Getting weather for" + city + "...</p>");  //  Dölj popover om den visas
+        cityPopover.hide();
         getWeatherCity(city);
         $("#cityInput").val("");
-    });
+    }); 
+
     // My location-knapp
     $("#locationBtn").on("click", function () {
         if (!navigator.geolocation) {
             $("#weather-view").html("<p>Your browser does not support this functionilty.</p>");
             return;
         }
-        $("#weather-view").html("<p>Getting your location</p>");
-
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            getWeatherLocation(lat, lon);
-        });
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+            // om platsen hämtas
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                getWeatherLocation(lat, lon);
+            },
+            function () {
+            // om platsen ej kan hämtas
+                $("#weather-view").html("<p>Could not get your location</p>");
+            }); 
     });
-});
+}); 
+
 // Hämta väder för stad
 function getWeatherCity(city) {
 
@@ -60,7 +68,9 @@ function getWeatherCity(city) {
             setTimeout(function () {
                 cityPopover.hide();
             }, 3000);
-        });}
+        });
+    }
+
 // Visa vädret
 function showWeather(data) {
     const iconName = data.weather[0].icon;
@@ -71,15 +81,16 @@ function showWeather(data) {
             <div class="col-12 col-md-10">
                 <div class="weather-card d-flex align-items-center justify-content-between p-4 shadow rounded">
                     <img src="${iconUrl}" alt="${data.weather[0].description}">
-                    <h2>${data.name}</h2>
-                    <p>Temp: ${data.main.temp} °C       </p>
-                    <p>Vind: ${data.wind.speed} m/s     </p>
-                    <p>${data.weather[0].description}   </p>
+                    <h2>${data.name}                </h2>
+                    <p>${data.main.temp} °C         </p>
+                    <p>${data.wind.speed} m/s       </p>
+                    
                 </div>
             </div>
         </div>
-    `;$("#weather-view").html(html);
+    `; $("#weather-view").html(html);
 }
+
 // Hämta väder med koordinater
 function getWeatherLocation(lat, lon) {
     const url =
@@ -96,12 +107,13 @@ function getWeatherLocation(lat, lon) {
             );
         });
     }
+
 // Lägg till historik
 function addToHistory(data) {
 
     const search = {
         city: data.name,
-        temp: data.main.temp,
+        temp: data.main.temp.toFixed(2),
         wind: data.wind.speed,
         icon: data.weather[0].icon
     };
@@ -114,7 +126,12 @@ function addToHistory(data) {
 }
 // Visa historik
 function showHistory() {
-    $("#history-view").html("<h2>Latest searches</h2>");
+    $("#history-view").html(`
+        <hr>
+        <h2>Latest requests</h2>
+        <p> We'll remember your last five requests for U</p>
+        <hr>
+    `);
     history.forEach(function(item) {
         const iconUrl = "https://openweathermap.org/img/wn/" + item.icon + "@2x.png";
 
