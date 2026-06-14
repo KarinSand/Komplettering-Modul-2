@@ -6,6 +6,7 @@ $(document).ready(function () {
     cityPopover = new bootstrap.Popover(document.getElementById("cityInput"), {
         trigger: "manual",
         placement: "bottom",
+        container: "body",
         content: "Could not locate the city"
     });
 
@@ -22,7 +23,8 @@ $(document).ready(function () {
             $("#weather-view").html("<p>Type city</p>");
             return;
         }
-        $("#weather-view").html("<p>Getting weather for " + city + "...</p>");  //Dölj popover om den visas
+        $("#weather-view").html("<p>Getting weather for " + city + "...</p>");  
+        cityPopover.hide();
         getWeatherCity(city);
         $("#cityInput").val("");
     }); // Sökfunktion end
@@ -68,7 +70,8 @@ function getWeatherCity(city) {
             setTimeout(function () {
                 cityPopover.hide();
             }, 3000);
-        });}
+        });
+    }
 // Visa vädret
 function showWeather(data) {
     const iconName = data.weather[0].icon;
@@ -86,7 +89,7 @@ function showWeather(data) {
                 </div>
             </div>
         </div>
-    `;$("#weather-view").html(html);
+    `; $("#weather-view").html(html);
 }
 // Hämta väder med koordinater
 function getWeatherLocation(lat, lon) {
