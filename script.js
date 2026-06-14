@@ -7,7 +7,7 @@ $(document).ready(function () {
         trigger: "manual",
         placement: "bottom",
         container: "body",
-        content: "Could not locate the city"
+        content: "We couldn't find the city, try again!"
     });
 
     const savedHistory = localStorage.getItem("weatherHistory");
@@ -15,7 +15,7 @@ $(document).ready(function () {
         history = JSON.parse(savedHistory);
         showHistory();
     }
-    
+
     // Sökfunktion
     $("#searchForm").on("submit", function (event) {
         event.preventDefault();
@@ -113,7 +113,7 @@ function addToHistory(data) {
 
     const search = {
         city: data.name,
-        temp: data.main.temp,
+        temp: data.main.temp.toFixed(2),
         wind: data.wind.speed,
         icon: data.weather[0].icon
     };
